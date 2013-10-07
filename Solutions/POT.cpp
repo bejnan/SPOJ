@@ -74,7 +74,7 @@ int pot(int l1, int l2) {
 	return 1;
 }
 
-int main() {
+int main_POT() {
 	int n, l1, l2;
 	cin >> n;
 	for (int i = 0; i < n; i++) {

@@ -34,5 +34,6 @@ int main_STOS() {
 			}
 		}
 	}
+	return 0;
 
 }

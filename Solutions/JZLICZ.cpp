@@ -23,5 +23,6 @@ int main_JZLICZ() {
 		if (chars[s] > 0)
 			cout << char(s) << ' ' << chars[s] << '\n';
 	}
+	return 0;
 
 }
