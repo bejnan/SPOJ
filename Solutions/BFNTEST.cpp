@@ -15,6 +15,7 @@ int main() {
 	state read_state;
 	int length = input.length();
 	char replacement;
+
 	for (int i = 0; i < length; i++)
 	{
 		replacement = input[i];
