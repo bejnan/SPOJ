@@ -9,7 +9,7 @@
 #include<stack>
 using namespace std;
 
-int main_old()
+int main_TABLICA()
 {
 	stack<int> numbers;
 	int number;

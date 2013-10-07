@@ -4,7 +4,7 @@ using namespace std;
 
 const int TO_UPPER = 'a' - 'A';
 
-int main_old() {
+int main_JSPACE() {
 	istreambuf_iterator<char> eos;
 	string input(istreambuf_iterator<char>(cin), eos);
 	string output;
