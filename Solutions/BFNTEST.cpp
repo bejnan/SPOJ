@@ -8,7 +8,7 @@ enum state{
 	normal = 0, short_comment, long_comment, text
 };
 
-int main() {
+int main_BFNTEST() {
 	istreambuf_iterator<char> eos;
 	string input(istreambuf_iterator<char>(cin), eos);
 	string output;
