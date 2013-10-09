@@ -27,7 +27,7 @@ vector<int> pomnoz(vector<int> m1, int n) {
 		return pomnoz(pomnoz(m1, n - 1), m1);
 	}
 }
-int main() {
+int main_KRO() {
 	int t, n;
 	LL l1, l2;
 	cin >> t;
