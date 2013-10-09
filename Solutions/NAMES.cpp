@@ -93,7 +93,7 @@ string makeBig(string s) {
 	}
 	return s;
 }
-int main() {
+int main_NAMES() {
 	string numer, name, fname;
 	map<string, int> fnames;
 	reader r;
