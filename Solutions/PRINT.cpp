@@ -1,10 +1,10 @@
 // 11 paź 2013
 // Jakub Banaszewski
-#define FOR(a,b) for(int i=(a);i<=(b);i++)
-#define REP(n) for(int i=0;i<(n);i++)
+#define FOR(i,a,b) for(int i=(a);i<=(b);i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
 
 #include<cstdio>
-
+#include<cstring>
 const int buf_size = 50000;
 const int char_size = 1;
 
@@ -113,19 +113,64 @@ public:
 		}
 	}
 };
-int main()
-{
-	int t,l1,l2;
+
+const int PRIMES_COUNT = 6543;
+const int MAX_PRIME = 65537;
+int primes[PRIMES_COUNT];
+
+void get_primes() {
+	int primes_count = 0;
+	bool numbers[MAX_PRIME+1];
+	REP(i,MAX_PRIME)
+		numbers[i] = true;
+	FOR(i,2,MAX_PRIME)
+	{
+		if (numbers[i]) {
+			primes[primes_count++] = i;
+			for (int j = i + i; j <= MAX_PRIME; j += i)
+				numbers[j] = false;
+		}
+	}
+}
+
+short eratostenes[1000000];
+int main() {
+	int t, l1, l2;
 	reader r;
 	writer w;
 	r.read_int(t);
-	REP(t)
+	get_primes();
+	REP(i,t)
 	{
+		memset(eratostenes,0,sizeof(eratostenes));
 		r.read_int(l1);
 		r.read_int(l2);
 
-
+		REP(i,PRIMES_COUNT)
+		{
+			FOR(j,l1,l2)
+			{
+				if (j%primes[i] == 0)
+				{
+					if (j != primes[i])
+						eratostenes[j-l1] = 1;
+					for (int k = primes[i]+primes[i];k <= l2-l1;k+=primes[i])
+					{
+						eratostenes[k] = false;
+					}
+					break;
+				}
+			}
+		}
+		FOR(j,l1,l2)
+		{
+			if (eratostenes[j-l1] == 0)
+			{
+				w.put_int(j);
+				w.endline();
+			}
+		}
 	}
-
+	w.flow();
 	return 0;
 }
