@@ -3,8 +3,10 @@
 #define FOR(i,a,b) for(int i=(a);i<=(b);i++)
 #define REP(i,n) for(int i=0;i<(n);i++)
 
+#include<iostream>
 #include<cstdio>
 #include<cstring>
+#include<cmath>
 const int buf_size = 50000;
 const int char_size = 1;
 
@@ -23,9 +25,31 @@ public:
 	}
 	inline void put_int(int l) {
 		int i = 0;
-		if (buf_size - head < 10)
+		if (buf_size - head < 12)
 			this->flow();
-		if (l > 999999) {
+
+		if (l > 999999999) {
+			i = head + 9;
+			do {
+				buf[i--] = l % 10 + '0';
+			} while ((l /= 10) > 0);
+			head += 11;
+			buf[head - 1] = ' ';
+		} else if (l > 99999999) {
+			i = head + 8;
+			do {
+				buf[i--] = l % 10 + '0';
+			} while ((l /= 10) > 0);
+			head += 10;
+			buf[head - 1] = ' ';
+		} else if (l > 9999999) {
+			i = head + 7;
+			do {
+				buf[i--] = l % 10 + '0';
+			} while ((l /= 10) > 0);
+			head += 9;
+			buf[head - 1] = ' ';
+		} else if (l > 999999) {
 			i = head + 6;
 			do {
 				buf[i--] = l % 10 + '0';
@@ -120,7 +144,7 @@ int primes[PRIMES_COUNT];
 
 void get_primes() {
 	int primes_count = 0;
-	bool numbers[MAX_PRIME+1];
+	bool numbers[MAX_PRIME + 1];
 	REP(i,MAX_PRIME)
 		numbers[i] = true;
 	FOR(i,2,MAX_PRIME)
@@ -133,42 +157,47 @@ void get_primes() {
 	}
 }
 
-short eratostenes[1000000];
+short eratostenes[1000001];
 int main() {
-	int t, l1, l2;
+	int t, l1, l2, l3;
+	double l2_sqrt;
 	reader r;
 	writer w;
 	r.read_int(t);
 	get_primes();
-	REP(i,t)
+	REP(m,t)
 	{
-		memset(eratostenes,0,sizeof(eratostenes));
+		memset(eratostenes, 0, sizeof(eratostenes));
 		r.read_int(l1);
 		r.read_int(l2);
 
-		REP(i,PRIMES_COUNT)
-		{
-			FOR(j,l1,l2)
+		l3 = (l2 == 2147483647) ? l2 - 1 : l2;
+		l2_sqrt = sqrt(l3);
+
+		for (int i = 0; primes[i] < l2_sqrt; i++) {
+			FOR(j,l1,l3)
 			{
-				if (j%primes[i] == 0)
-				{
-					if (j != primes[i])
-						eratostenes[j-l1] = 1;
-					for (int k = primes[i]+primes[i];k <= l2-l1;k+=primes[i])
-					{
-						eratostenes[k] = false;
+				if (j % primes[i] == 0) {
+					if (j != primes[i]) {
+						eratostenes[j - l1] = 1;
+					}
+					for (int k = primes[i]; k <= l2 - l1; k += primes[i]) {
+						eratostenes[j + k - l1] = 1;
 					}
 					break;
 				}
 			}
 		}
-		FOR(j,l1,l2)
+		FOR(j,l1,l3)
 		{
-			if (eratostenes[j-l1] == 0)
-			{
+			if (eratostenes[j - l1] == 0) {
 				w.put_int(j);
 				w.endline();
 			}
+		}
+		if (l3 < l2) {
+			w.put_int(l2);
+			w.endline();
 		}
 	}
 	w.flow();
