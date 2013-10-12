@@ -12,94 +12,51 @@ const int char_size = 1;
 
 using namespace std;
 
+
 class writer {
 public:
 	char buf[buf_size];
 	int head;
+	const static int tens[];
 	writer() :
-			head(0) {
+			head(0)
+		{
 	}
+
 	inline void flow() {
 		fwrite(buf, char_size, head, stdout);
 		head = 0;
 	}
+
 	inline void put_int(int l) {
 		int i = 0;
 		if (buf_size - head < 12)
 			this->flow();
 
-		if (l > 999999999) {
-			i = head + 9;
-			do {
-				buf[i--] = l % 10 + '0';
-			} while ((l /= 10) > 0);
-			head += 11;
-			buf[head - 1] = ' ';
-		} else if (l > 99999999) {
-			i = head + 8;
-			do {
-				buf[i--] = l % 10 + '0';
-			} while ((l /= 10) > 0);
-			head += 10;
-			buf[head - 1] = ' ';
-		} else if (l > 9999999) {
-			i = head + 7;
-			do {
-				buf[i--] = l % 10 + '0';
-			} while ((l /= 10) > 0);
-			head += 9;
-			buf[head - 1] = ' ';
-		} else if (l > 999999) {
-			i = head + 6;
-			do {
-				buf[i--] = l % 10 + '0';
-			} while ((l /= 10) > 0);
-			head += 8;
-			buf[head - 1] = ' ';
-		} else if (l > 99999) {
-			i = head + 5;
-			do {
-				buf[i--] = l % 10 + '0';
-			} while ((l /= 10) > 0);
-			head += 7;
-			buf[head - 1] = ' ';
-		} else if (l > 9999) {
-			i = head + 4;
-			do {
-				buf[i--] = l % 10 + '0';
-			} while ((l /= 10) > 0);
-			head += 6;
-			buf[head - 1] = ' ';
-		} else if (l > 999) {
-			i = head + 3;
-			do {
-				buf[i--] = l % 10 + '0';
-			} while ((l /= 10) > 0);
-			head += 5;
-			buf[head - 1] = ' ';
-		} else if (l > 99) {
-			i = head + 2;
-			do {
-				buf[i--] = l % 10 + '0';
-			} while ((l /= 10) > 0);
-			head += 4;
-			buf[head - 1] = ' ';
-		} else if (l > 9) {
-			i = head + 1;
-			do {
-				buf[i--] = l % 10 + '0';
-			} while ((l /= 10) > 0);
-			head += 3;
-			buf[head - 1] = ' ';
-		} else {
+		for (int j = 0; j < 10; j++) {
+			if ((l / tens[j]) > 0) {
+				i = head + 9 - j;
+				do {
+					buf[i--] = l % 10 + '0';
+				} while ((l /= 10) > 0);
+				head += 11 - j;
+				buf[head - 1] = ' ';
+				break;
+			}
+		}
+		if (i == 0)
+		{
 			buf[head++] = l + '0';
 			buf[head++] = ' ';
 		}
 	}
+
 	inline void endline() {
-		buf[head++] = '\n';
-	}
+			buf[head++] = '\n';
+		}
 };
+
+const int writer::tens[]  = {1000000000, 100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1 };
 class reader {
 public:
 	char buf2[buf_size];
@@ -157,7 +114,7 @@ void get_primes() {
 	}
 }
 
-short eratostenes[1000001];
+short eratostenes[1000002];
 int main() {
 	int t, l1, l2, l3;
 	double l2_sqrt;
