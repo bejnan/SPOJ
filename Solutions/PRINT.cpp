@@ -12,15 +12,13 @@ const int char_size = 1;
 
 using namespace std;
 
-
 class writer {
 public:
 	char buf[buf_size];
 	int head;
 	const static int tens[];
 	writer() :
-			head(0)
-		{
+			head(0) {
 	}
 
 	inline void flow() {
@@ -44,19 +42,19 @@ public:
 				break;
 			}
 		}
-		if (i == 0)
-		{
+		if (i == 0) {
 			buf[head++] = l + '0';
 			buf[head++] = ' ';
 		}
 	}
 
 	inline void endline() {
-			buf[head++] = '\n';
-		}
+		buf[head++] = '\n';
+	}
 };
 
-const int writer::tens[]  = {1000000000, 100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1 };
+const int writer::tens[] = { 1000000000, 100000000, 10000000, 1000000, 100000,
+		10000, 1000, 100, 10, 1 };
 class reader {
 public:
 	char buf2[buf_size];
@@ -71,7 +69,7 @@ public:
 		head = 0;
 		tail = count;
 	}
-	inline void read_int(int &x) {
+	inline void read_int(unsigned int &x) {
 		char z;
 		x = 0;
 		do {
@@ -116,7 +114,10 @@ void get_primes() {
 
 short eratostenes[1000002];
 int main() {
-	int t, l1, l2, l3;
+
+
+	unsigned int t, l1, l2;
+
 	double l2_sqrt;
 	reader r;
 	writer w;
@@ -124,37 +125,33 @@ int main() {
 	get_primes();
 	REP(m,t)
 	{
-		memset(eratostenes, 0, sizeof(eratostenes));
 		r.read_int(l1);
 		r.read_int(l2);
 
-		l3 = (l2 == 2147483647) ? l2 - 1 : l2;
-		l2_sqrt = sqrt(l3);
+		memset(eratostenes, 0, sizeof(eratostenes));
+
+		l2_sqrt = sqrt(l2);
 
 		for (int i = 0; primes[i] < l2_sqrt; i++) {
-			FOR(j,l1,l3)
+			FOR(j,l1,l2)
 			{
 				if (j % primes[i] == 0) {
 					if (j != primes[i]) {
 						eratostenes[j - l1] = 1;
 					}
-					for (int k = primes[i]; k <= l2 - l1; k += primes[i]) {
+					for (unsigned int k = primes[i]; k <= l2 - j; k += primes[i]) {
 						eratostenes[j + k - l1] = 1;
 					}
 					break;
 				}
 			}
 		}
-		FOR(j,l1,l3)
+		FOR(j,l1,l2)
 		{
 			if (eratostenes[j - l1] == 0) {
 				w.put_int(j);
 				w.endline();
 			}
-		}
-		if (l3 < l2) {
-			w.put_int(l2);
-			w.endline();
 		}
 	}
 	w.flow();
