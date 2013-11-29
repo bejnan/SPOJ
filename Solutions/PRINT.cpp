@@ -114,9 +114,8 @@ void get_primes() {
 
 short eratostenes[1000002];
 int main() {
-
-
 	unsigned int t, l1, l2;
+	int counter = 0;
 
 	double l2_sqrt;
 	reader r;
@@ -139,7 +138,7 @@ int main() {
 					if (j != primes[i]) {
 						eratostenes[j - l1] = 1;
 					}
-					for (unsigned int k = primes[i]; k <= l2 - j; k += primes[i]) {
+					for (int k = primes[i]; k <= l2 - j; k += primes[i]) {
 						eratostenes[j + k - l1] = 1;
 					}
 					break;
@@ -149,10 +148,14 @@ int main() {
 		FOR(j,l1,l2)
 		{
 			if (eratostenes[j - l1] == 0) {
-				w.put_int(j);
-				w.endline();
+				//w.put_int(j);
+				//w.endline();
+				++counter;
 			}
 		}
+		w.put_int(counter);
+		w.endline();
+		counter = 0;
 	}
 	w.flow();
 	return 0;
